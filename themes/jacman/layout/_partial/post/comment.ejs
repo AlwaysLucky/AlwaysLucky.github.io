@@ -1,0 +1,20 @@
+<% if (theme.duoshuo_shortname && page.comments){ %>
+<section id="comments">
+        <div id="uyan_frame"></div>
+		<script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2116217"></script>
+    </section>
+<% } %>
+
+<% if( (config.disqus_shortname || theme.disqus_shortname) && page.comments) { %>
+<section id="comments">
+        <div id="uyan_frame"></div>
+		<script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2116217"></script>
+    </section>
+<% } %>
+
+<% if (page.comments) { %>
+    <section id="comments">
+        <div id="uyan_frame"></div>
+		<script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2116217"></script>
+    </section>
+<% } %>
