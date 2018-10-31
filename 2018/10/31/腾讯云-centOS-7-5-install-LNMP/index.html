@@ -1,0 +1,782 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-cn">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="首先,设置centOS 7 EPEL repository yum install epel-release  进入正文一,安装nginx yum install nginx  启动nginx systemctl start nginx  测试nginx启动成功 http://yourIPAddress/  出现下图 则第一步成功 设置nginx开机启动 systemctl enable ngin">
+<meta property="og:type" content="article">
+<meta property="og:title" content="腾讯云 centOS 7.5 install LNMP">
+<meta property="og:url" content="http://www.diaosi19.com/2018/10/31/腾讯云-centOS-7-5-install-LNMP/index.html">
+<meta property="og:site_name" content="屌丝依旧">
+<meta property="og:description" content="首先,设置centOS 7 EPEL repository yum install epel-release  进入正文一,安装nginx yum install nginx  启动nginx systemctl start nginx  测试nginx启动成功 http://yourIPAddress/  出现下图 则第一步成功 设置nginx开机启动 systemctl enable ngin">
+<meta property="og:locale" content="zh-cn">
+<meta property="og:image" content="http://www.diaosi19.com/2018/10/31/腾讯云-centOS-7-5-install-LNMP/nginx.png">
+<meta property="og:image" content="http://www.diaosi19.com/2018/10/31/腾讯云-centOS-7-5-install-LNMP/server.png">
+<meta property="og:updated_time" content="2018-10-31T07:30:16.070Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="腾讯云 centOS 7.5 install LNMP">
+<meta name="twitter:description" content="首先,设置centOS 7 EPEL repository yum install epel-release  进入正文一,安装nginx yum install nginx  启动nginx systemctl start nginx  测试nginx启动成功 http://yourIPAddress/  出现下图 则第一步成功 设置nginx开机启动 systemctl enable ngin">
+<meta name="twitter:image" content="http://www.diaosi19.com/2018/10/31/腾讯云-centOS-7-5-install-LNMP/nginx.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 'undefined',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.diaosi19.com/2018/10/31/腾讯云-centOS-7-5-install-LNMP/"/>
+
+
+
+
+
+  <title>腾讯云 centOS 7.5 install LNMP | 屌丝依旧</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0af9bd64c5b98747f5a7360e67f0f735";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-cn">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">屌丝依旧</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://www.diaosi19.com/2018/10/31/腾讯云-centOS-7-5-install-LNMP/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="AlwaysLucky">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="屌丝依旧">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">腾讯云 centOS 7.5 install LNMP</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-10-31T13:58:19+08:00">
+                2018-10-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="首先-设置centOS-7-EPEL-repository"><a href="#首先-设置centOS-7-EPEL-repository" class="headerlink" title="首先,设置centOS 7 EPEL repository"></a>首先,设置centOS 7 EPEL repository</h2><blockquote>
+<p><code>yum install epel-release</code></p>
+</blockquote>
+<h2 id="进入正文"><a href="#进入正文" class="headerlink" title="进入正文"></a>进入正文</h2><h2 id="一-安装nginx"><a href="#一-安装nginx" class="headerlink" title="一,安装nginx"></a>一,安装nginx</h2><blockquote>
+<p><code>yum install nginx</code></p>
+</blockquote>
+<h2 id="启动nginx"><a href="#启动nginx" class="headerlink" title="启动nginx"></a>启动nginx</h2><blockquote>
+<p><code>systemctl start nginx</code></p>
+</blockquote>
+<h2 id="测试nginx启动成功"><a href="#测试nginx启动成功" class="headerlink" title="测试nginx启动成功"></a>测试nginx启动成功</h2><blockquote>
+<p><a href="http://yourIPAddress/" target="_blank" rel="noopener">http://yourIPAddress/</a></p>
+</blockquote>
+<h2 id="出现下图-则第一步成功"><a href="#出现下图-则第一步成功" class="headerlink" title="出现下图 则第一步成功"></a>出现下图 则第一步成功</h2><img src="/2018/10/31/腾讯云-centOS-7-5-install-LNMP/nginx.png">
+<h2 id="设置nginx开机启动"><a href="#设置nginx开机启动" class="headerlink" title="设置nginx开机启动"></a>设置nginx开机启动</h2><blockquote>
+<p><code>systemctl enable nginx</code></p>
+</blockquote>
+<h2 id="二-安装MariaDB-MySQL-注意这里装mysql是不行的-原因自行查询"><a href="#二-安装MariaDB-MySQL-注意这里装mysql是不行的-原因自行查询" class="headerlink" title="二,安装MariaDB(MySQL) 注意这里装mysql是不行的,原因自行查询"></a>二,安装MariaDB(MySQL) 注意这里装mysql是不行的,原因自行查询</h2><blockquote>
+<p><code>yum install mariadb-server mariadb</code></p>
+</blockquote>
+<h2 id="启动MariaDB"><a href="#启动MariaDB" class="headerlink" title="启动MariaDB"></a>启动MariaDB</h2><blockquote>
+<p><code>systemctl start mariadb</code></p>
+</blockquote>
+<h2 id="接下来-执行"><a href="#接下来-执行" class="headerlink" title="接下来,执行"></a>接下来,执行</h2><blockquote>
+<p><code>mysql_secure_installation</code></p>
+</blockquote>
+<h2 id="下面会进行MariaDB的一些配置"><a href="#下面会进行MariaDB的一些配置" class="headerlink" title="下面会进行MariaDB的一些配置"></a>下面会进行MariaDB的一些配置</h2><ul>
+<li>Set root password? [Y/n] &lt;– 是否设置root用户密码</li>
+<li>Remove anonymous users? [Y/n] &lt;– 是否删除匿名用户</li>
+<li>Disallow root login remotely? [Y/n] &lt;–是否禁止root远程登录</li>
+<li>Remove test database and access to it? [Y/n] &lt;– 是否删除test数据库</li>
+<li>Reload privilege tables now? [Y/n] &lt;– 是否重新加载权限表</li>
+<li>… Success! 出现Success 成功</li>
+</ul>
+<h2 id="设置MariaDB开机启动"><a href="#设置MariaDB开机启动" class="headerlink" title="设置MariaDB开机启动"></a>设置MariaDB开机启动</h2><blockquote>
+<p><code>systemctl enable mariadb</code></p>
+</blockquote>
+<h2 id="安装php"><a href="#安装php" class="headerlink" title="安装php"></a>安装php</h2><blockquote>
+<p><code>yum install php php-mysql php-fpm</code></p>
+</blockquote>
+<h2 id="改写配置文件-etc-php-ini"><a href="#改写配置文件-etc-php-ini" class="headerlink" title="改写配置文件 /etc/php.ini"></a>改写配置文件 /etc/php.ini</h2><blockquote>
+<p>找到<code>;cgi.fix_pathinfo=1</code>, 改写为<code>cgi.fix_pathinfo=0</code>, 并去掉’;’</p>
+</blockquote>
+<h2 id="改写配置文件-etc-php-fpm-d-www-conf"><a href="#改写配置文件-etc-php-fpm-d-www-conf" class="headerlink" title="改写配置文件 /etc/php-fpm.d/www.conf"></a>改写配置文件 /etc/php-fpm.d/<a href="http://www.conf" target="_blank" rel="noopener">www.conf</a></h2><blockquote>
+<p>添加 <code>listen = /run/php-fpm/www.sock</code> , 网上大部分教程是添加<code>/var/run/php-fpm/php-fpm.sock</code>, 亲测不行<br>listen.owner = nobody  nobody是你的系统用户名<br>listen.group = nobody  nobody是你的系统用户名<br>listen.mode = 0666 去除前面的’;’<br>user = nginx<br>group = nginx</p>
+</blockquote>
+<h2 id="start-PHP"><a href="#start-PHP" class="headerlink" title="start PHP"></a>start PHP</h2><blockquote>
+<p><code>systemctl start php-fpm</code></p>
+</blockquote>
+<h2 id="设置开机启动"><a href="#设置开机启动" class="headerlink" title="设置开机启动"></a>设置开机启动</h2><blockquote>
+<p><code>systemctl enable php-fpm</code></p>
+</blockquote>
+<h2 id="配置NGIX处理PHP页面nginx-conf"><a href="#配置NGIX处理PHP页面nginx-conf" class="headerlink" title="配置NGIX处理PHP页面nginx.conf"></a>配置NGIX处理PHP页面nginx.conf</h2><blockquote>
+<p>配置文件是 /etc/nginx/nginx.conf 要在这里改 与老版本的不一样</p>
+</blockquote>
+<img src="/2018/10/31/腾讯云-centOS-7-5-install-LNMP/server.png">
+<blockquote>
+<p><pre><br>  <code>server {<br>        listen       80 default_server;<br>        listen       [::]:80 default_server;<br>        server_name  _;<br>        root         /usr/share/nginx/html;<br>        index  index.php index.html index.htm;</code></pre></p>
+</blockquote>
+<pre><code>    # Load configuration files for the default server block.
+    include /etc/nginx/default.d/*.conf;
+    error_page 404 /404.html;
+        location = /40x.html {
+    }
+    error_page 500 502 503 504 /50x.html;
+        location = /50x.html {
+    }
+    location ~ \.php$ {
+        try_files $uri =404;
+        fastcgi_pass unix:/run/php-fpm/www.sock;
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include fastcgi_params;
+    }
+}&lt;/code&gt;
+</code></pre><blockquote>
+<p></p>
+</blockquote>
+<h2 id="重启nginx"><a href="#重启nginx" class="headerlink" title="重启nginx"></a>重启nginx</h2><blockquote>
+<p><code>systemctl restart nginx</code></p>
+</blockquote>
+<h2 id="测试php成功-祝你好运"><a href="#测试php成功-祝你好运" class="headerlink" title="测试php成功 祝你好运"></a>测试php成功 祝你好运</h2>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/09/屌丝有感/" rel="next" title="屌丝有感">
+                <i class="fa fa-chevron-left"></i> 屌丝有感
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNzMwOC8xMzg0Mg=="></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="AlwaysLucky" />
+          <p class="site-author-name" itemprop="name">AlwaysLucky</p>
+           
+              <p class="site-description motion-element" itemprop="description">前端菜鸟成长日记</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">posts</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#首先-设置centOS-7-EPEL-repository"><span class="nav-number">1.</span> <span class="nav-text">首先,设置centOS 7 EPEL repository</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进入正文"><span class="nav-number">2.</span> <span class="nav-text">进入正文</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一-安装nginx"><span class="nav-number">3.</span> <span class="nav-text">一,安装nginx</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#启动nginx"><span class="nav-number">4.</span> <span class="nav-text">启动nginx</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#测试nginx启动成功"><span class="nav-number">5.</span> <span class="nav-text">测试nginx启动成功</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#出现下图-则第一步成功"><span class="nav-number">6.</span> <span class="nav-text">出现下图 则第一步成功</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置nginx开机启动"><span class="nav-number">7.</span> <span class="nav-text">设置nginx开机启动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二-安装MariaDB-MySQL-注意这里装mysql是不行的-原因自行查询"><span class="nav-number">8.</span> <span class="nav-text">二,安装MariaDB(MySQL) 注意这里装mysql是不行的,原因自行查询</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#启动MariaDB"><span class="nav-number">9.</span> <span class="nav-text">启动MariaDB</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#接下来-执行"><span class="nav-number">10.</span> <span class="nav-text">接下来,执行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#下面会进行MariaDB的一些配置"><span class="nav-number">11.</span> <span class="nav-text">下面会进行MariaDB的一些配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置MariaDB开机启动"><span class="nav-number">12.</span> <span class="nav-text">设置MariaDB开机启动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装php"><span class="nav-number">13.</span> <span class="nav-text">安装php</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#改写配置文件-etc-php-ini"><span class="nav-number">14.</span> <span class="nav-text">改写配置文件 /etc/php.ini</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#改写配置文件-etc-php-fpm-d-www-conf"><span class="nav-number">15.</span> <span class="nav-text">改写配置文件 /etc/php-fpm.d/www.conf</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#start-PHP"><span class="nav-number">16.</span> <span class="nav-text">start PHP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置开机启动"><span class="nav-number">17.</span> <span class="nav-text">设置开机启动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置NGIX处理PHP页面nginx-conf"><span class="nav-number">18.</span> <span class="nav-text">配置NGIX处理PHP页面nginx.conf</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#重启nginx"><span class="nav-number">19.</span> <span class="nav-text">重启nginx</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#测试php成功-祝你好运"><span class="nav-number">20.</span> <span class="nav-text">测试php成功 祝你好运</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">AlwaysLucky</span>
+</div>
+
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
